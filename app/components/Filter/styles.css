@@ -1,0 +1,133 @@
+.overflowAuto {
+  overflow: auto;
+}
+
+.fg10auto {
+  flex: 1 0 auto;
+}
+
+.col1 {
+  width: 50px;
+}
+
+.col2 {
+  width: 80px;
+}
+
+.col3 {
+  width: auto;
+}
+
+.col4 {
+  width: 50px;
+  flex-direction: column;
+}
+
+.colFace {
+  width: 70px;
+}
+
+.colLen {
+  width: 40px;
+}
+
+.colTime {
+  width: 130px;
+}
+
+.colInterp {
+  box-sizing: border-box;
+  padding-right: 22px;
+  width: 80px;
+  text-align: center;
+}
+
+.sort {
+  min-height: 38px;
+  max-height: 38px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  font-weight: 200;
+}
+
+.activeSort {
+  font-weight: 500;
+}
+
+.listContainer {
+  overflow: auto;
+}
+
+.listRow {
+  position: relative;
+  overflow: hidden;
+  min-height: 80px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  transition: min-height 250ms;
+}
+
+.groupItem {
+  min-height: 34px;
+  align-items: baseline;
+}
+
+.udrText {
+  text-align: center;
+  color: #ffeb3b;
+  font-weight: 500;
+  font-size: 14px;
+  width: 48px;
+  height: 30px;
+  line-height: 30px;
+  margin-top: -25px;
+}
+
+.polyPreview {
+  overflow: hidden;
+  img {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    border-radius: 3px;
+  }
+}
+
+.timePeriod {
+  cursor: pointer;
+  border-bottom: 1px dashed #333;
+  &:hover {
+    border-bottom: 1px dashed #666;
+  }
+}
+
+.clickable {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  border-bottom: 1px dashed #333;
+  &:hover {
+    border-bottom: 1px dashed #666;
+  }
+  > div {
+    transform: scale(0.8);
+  }
+}
+
+.expandable {
+  cursor: pointer;
+  transition: transform 200ms;
+}
+
+.open {
+  transform: rotate(90deg);
+}
+
+.hilightedGroup {
+  background: rgba(255, 255, 128, 0.1);
+  position: absolute;
+  height: 36px;
+  left: 0;
+  width: 100%;
+  margin-top: -3px;
+  border-left: 5px solid rgba(255, 255, 128, 0.4);
+  pointer-events: none;
+}

@@ -8,6 +8,8 @@ import { connectRouter } from 'connected-react-router';
 import history from 'utils/history';
 import globalReducer from 'containers/App/reducer';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
+import locationReducer from './containers/HomePage/findingLocationReducer';
+import hotelReducer from './containers/HomePage/hotelReducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -17,6 +19,8 @@ export default function createReducer(injectedReducers = {}) {
     global: globalReducer,
     language: languageProviderReducer,
     router: connectRouter(history),
+    findingLocation: locationReducer,
+    hotels: hotelReducer,
     ...injectedReducers,
   });
 

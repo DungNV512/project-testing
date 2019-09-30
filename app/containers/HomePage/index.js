@@ -1,60 +1,63 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- */
-
-import React, { useEffect, memo } from 'react';
+/* eslint-disable no-extra-boolean-cast */
+import React, { useEffect, useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-
+import Paper from '@material-ui/core/Paper';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import {
-  makeSelectRepos,
   makeSelectLoading,
   makeSelectError,
+  makeSelectFilteredHotels,
 } from 'containers/App/selectors';
 import H2 from 'components/H2';
-import ReposList from 'components/ReposList';
-import AtPrefix from './AtPrefix';
+import { Grid, FormControl, InputLabel, Select } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import IntegrationAutosuggest from '../../components/autoSuggestion';
+import Filter from '../../components/Filter';
 import CenteredSection from './CenteredSection';
-import Form from './Form';
-import Input from './Input';
+import ListHotels from './ListHotels';
 import Section from './Section';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
-import { makeSelectUsername } from './selectors';
+import { changeUsername, changeSortBy } from './actions';
+import { makeSelectUsername, makeSelectFindingLocations } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
 const key = 'home';
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
-export function HomePage({
-  username,
-  loading,
-  error,
-  repos,
-  onSubmitForm,
-  onChangeUsername,
-}) {
+export const HomePage = ({ username, onSubmitForm, onHandleSort }) => {
+  const classes = useStyles();
+  const [sortBy, setSortBy] = useState({
+    name: 'A to Z',
+  });
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
 
   useEffect(() => {
-    // When initial state username is not null, submit the form to load repos
     if (username && username.trim().length > 0) onSubmitForm();
   }, []);
 
-  const reposListProps = {
-    loading,
-    error,
-    repos,
+  const handleChange = sortByName => event => {
+    onHandleSort(event.target.value);
   };
 
   return (
@@ -68,51 +71,65 @@ export function HomePage({
       </Helmet>
       <div>
         <CenteredSection>
-          <H2>
-            <FormattedMessage {...messages.startProjectHeader} />
-          </H2>
-          <p>
-            <FormattedMessage {...messages.startProjectMessage} />
-          </p>
+          <H2>Goquo Testing Project</H2>
         </CenteredSection>
         <Section>
-          <H2>
-            <FormattedMessage {...messages.trymeHeader} />
-          </H2>
-          <Form onSubmit={onSubmitForm}>
-            <label htmlFor="username">
-              <FormattedMessage {...messages.trymeMessage} />
-              <AtPrefix>
-                <FormattedMessage {...messages.trymeAtPrefix} />
-              </AtPrefix>
-              <Input
-                id="username"
-                type="text"
-                placeholder="mxstbr"
-                value={username}
-                onChange={onChangeUsername}
-              />
-            </label>
-          </Form>
-          <ReposList {...reposListProps} />
+          <H2>Find location</H2>
+          {/* <Filter filter={filter} setFilterGroups={setFilterGroups}/> */}
+          <Grid container xs={12}>
+            <Grid item xs={12}>
+              <Filter />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-native-simple">
+                  Sort by Name
+                </InputLabel>
+                <Select
+                  native
+                  value={sortBy.sortBy}
+                  onChange={handleChange('sortBy')}
+                  inputProps={{
+                    sortBy: true,
+                    id: 'age-native-simple',
+                  }}
+                >
+                  <option value>A to Z</option>
+                  <option value={false}>Z to A</option>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <IntegrationAutosuggest />
+          <Grid container xs={12} className="list-hotel-wrapper">
+            <Grid item xs={6}>
+              <ListHotels itemsPerPage={2} activePage={1} sortBy />
+            </Grid>
+          </Grid>
         </Section>
       </div>
     </article>
   );
-}
+};
 
 HomePage.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-  repos: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  hotels: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  findingLocations: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  onSubmitLocation: PropTypes.func,
   onSubmitForm: PropTypes.func,
+  onSubmitLocationForm: PropTypes.func,
   username: PropTypes.string,
+  onChangeFindingLocations: PropTypes.func,
   onChangeUsername: PropTypes.func,
+  onHandleSort: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
+  hotels: makeSelectFilteredHotels(),
   username: makeSelectUsername(),
+  findingLocations: makeSelectFindingLocations(),
   loading: makeSelectLoading(),
   error: makeSelectError(),
 });
@@ -120,6 +137,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
+    onHandleSort: evt => dispatch(changeSortBy(evt)),
     onSubmitForm: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());

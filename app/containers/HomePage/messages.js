@@ -10,12 +10,12 @@ export const scope = 'boilerplate.containers.HomePage';
 export default defineMessages({
   startProjectHeader: {
     id: `${scope}.start_project.header`,
-    defaultMessage: 'Start your next react project in seconds',
+    defaultMessage: 'Goquo Testing Project',
   },
   startProjectMessage: {
     id: `${scope}.start_project.message`,
     defaultMessage:
-      'A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices',
+      'A mini app for listing hotels by location, support pagination, sorting, filtering',
   },
   trymeHeader: {
     id: `${scope}.tryme.header`,

@@ -1,12 +1,6 @@
-/*
- * HomeConstants
- * Each action has a corresponding type, which the reducer knows and picks up on.
- * To avoid weird typos between the reducer and the actions, we save them as
- * constants here. We prefix them with 'yourproject/YourComponent' so we avoid
- * reducers accidentally picking up actions they shouldn't.
- *
- * Follow this format:
- * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
- */
-
 export const CHANGE_USERNAME = 'boilerplate/Home/CHANGE_USERNAME';
+export const CHANGE_FINDING_LOCATION =
+  'boilerplate/Home/CHANGE_FINDING_LOCATION';
+export const LOAD_HOTELS_LIST = 'boilerplate/Home/LOAD_HOTELS_LIST';
+export const CHANGE_FILTER = 'boilerplate/Home/CHANGE_FILTER';
+export const CHANGE_SORTBY = 'boilerplate/Home/CHANGE_SORTBY';
