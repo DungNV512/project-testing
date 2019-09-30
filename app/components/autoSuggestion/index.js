@@ -66,7 +66,6 @@ function getSuggestions(value, suggestions) {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
-  console.log('getSuggestions', value, suggestions);
   return inputLength === 0
     ? []
     : suggestions.filter(suggestion => {
@@ -131,7 +130,6 @@ const IntegrationAutosuggest = ({
   }, [suggestions]);
 
   const handleSuggestionsFetchRequested = ({ value }) => {
-    console.log('handleSuggestionsFetchRequested', value);
     setSuggestions(getSuggestions(value, suggestions));
   };
 
@@ -140,10 +138,6 @@ const IntegrationAutosuggest = ({
   };
 
   const handleChange = name => (event, { newValue }) => {
-    console.log('handleChange', event, name, newValue);
-    if (event.key === 'Enter') {
-      console.log('enter press here! ');
-    }
     onFetchingFindingLocation(newValue);
     setState({
       ...state,
@@ -176,7 +170,6 @@ const IntegrationAutosuggest = ({
           value: state.popper,
           onChange: handleChange('popper'),
           inputRef: node => {
-            console.log(node);
             setAnchorEl(node);
           },
           InputLabelProps: {
@@ -215,19 +208,16 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError(),
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onFetchingFindingLocation: evt => {
-      console.log(evt);
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(changeFindingLocations(evt));
-    },
-    onFetchingHotels: evt => {
-      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadHotels(evt));
-    },
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  onFetchingFindingLocation: evt => {
+    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+    dispatch(changeFindingLocations(evt));
+  },
+  onFetchingHotels: evt => {
+    if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+    dispatch(loadHotels(evt));
+  },
+});
 
 const withConnect = connect(
   mapStateToProps,

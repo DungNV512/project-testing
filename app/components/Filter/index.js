@@ -117,9 +117,7 @@ const mapStateToProps = createStructuredSelector({});
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onChangeFilter: evt => {
-      return dispatch(changeFilter(evt));
-    },
+    onChangeFilter: evt => dispatch(changeFilter(evt)),
   };
 }
 
