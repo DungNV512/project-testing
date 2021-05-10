@@ -80,7 +80,7 @@
     "intl": "1.2.5",
     "invariant": "2.2.4",
     "ip": "1.1.5",
-    "lodash": "4.17.11",
+    "lodash": "4.17.21",
     "lodash.get": "^4.4.2",
     "lodash.orderby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
